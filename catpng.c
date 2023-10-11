@@ -9,10 +9,7 @@
 #include "zutil.h"
 #include <errno.h>
 
-<<<<<<< HEAD
-=======
 //function to initialize data
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
 void init_data(U8 *buf, int len)
 {
     int i;
@@ -39,10 +36,6 @@ int main(int argc, char *argv[]) {
     FILE *file_1 = fopen(argv[1], "rb");
     fread(first_bytes, 1, 33, file_1);
 
-<<<<<<< HEAD
-    // do i wanna do this??
-=======
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     fclose(file_1);
 
     fwrite(first_bytes, 1, 33, all_file);
@@ -71,26 +64,13 @@ int main(int argc, char *argv[]) {
     }
 
     all_height_input = htonl(all_height);
-<<<<<<< HEAD
-
-    U32 *ptr1 = &all_height_input;
-=======
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
 
     U32 *ptr1 = &all_height_input;
     fseek(all_file, 20, 0);
     fwrite(ptr1, 1, 4 ,all_file);
 
-<<<<<<< HEAD
-    //make smthn to keep the total data 
-
     U8 *p_buffer = NULL;  //a buffer that contains some data to play with 
     U8 *p_buffer_def = NULL;  //a buffer that contains some data to play with 
-    //U32 crc_val = 0;      //CRC value                                     
-=======
-    U8 *p_buffer = NULL;  //a buffer that contains some data to play with 
-    U8 *p_buffer_def = NULL;  //a buffer that contains some data to play with 
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     int ret = 0;          //return value for various routines           
     U64 len = 0;
     U64 len2 = 0;                             
@@ -105,11 +85,6 @@ int main(int argc, char *argv[]) {
 	return errno;
     }
 
-<<<<<<< HEAD
-    //printf("%d\n",(all_height * (all_width + 1)));
-
-=======
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     init_data(p_buffer, buffer_size * sizeof(unsigned char));
 
     for (int i = 1; i < argc; ++i) {
@@ -127,7 +102,6 @@ int main(int argc, char *argv[]) {
         struct data_IHDR IHDR_object;
         struct data_IHDR *IHDR_object_ptr = &IHDR_object;
         get_png_data_IHDR (IHDR_object_ptr, curr, 16, SEEK_SET);
-<<<<<<< HEAD
 
         U32 curr_height = IHDR_object_ptr -> height ;
         U32 curr_width = IHDR_object_ptr -> width;
@@ -135,15 +109,6 @@ int main(int argc, char *argv[]) {
 
         U8 *p_data_buff = malloc(curr_size * sizeof(unsigned char));
 
-=======
-
-        U32 curr_height = IHDR_object_ptr -> height ;
-        U32 curr_width = IHDR_object_ptr -> width;
-        U32 curr_size = curr_height * (curr_width*4 + 1);
-
-        U8 *p_data_buff = malloc(curr_size * sizeof(unsigned char));
-
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
         get_chunk(IDAT_p, curr, 25);
 
         int data_len_ID = IDAT_p->length;
@@ -152,31 +117,11 @@ int main(int argc, char *argv[]) {
 
         for(int i = 0; i < data_len_ID; ++i){
             d_IDAT[i] = get_chunk_data(curr, 25, i);
-<<<<<<< HEAD
-           //printf("%x\n", d_IDAT[i]);
-=======
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
         }
 
         IDAT_p->p_data = d_IDAT;
 
         U64 data_len_ID2 = IDAT_p->length;
-<<<<<<< HEAD
-
-        //printf("%d\n", IDAT_p->length);
-
-        ret = mem_inf(p_data_buff, len_inf,  IDAT_p->p_data , data_len_ID2);
-
-        //printf("%d\n", *len_inf);
-
-        memcpy(p_buffer + len_tot, p_data_buff, *len_inf);
-        //printf("%d\n", p_buffer);
-        len_tot += *len_inf;
-
-        //printf("%d", len_tot);
-        free(p_data_buff);
-        //inflate
-=======
 
         ret = mem_inf(p_data_buff, len_inf,  IDAT_p->p_data , data_len_ID2);
 
@@ -184,33 +129,10 @@ int main(int argc, char *argv[]) {
         len_tot += *len_inf;
 
         free(p_data_buff);
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
         fclose(curr);
     }
 
     p_buffer_def = malloc(buffer_size * sizeof(unsigned char));  
-<<<<<<< HEAD
-    if (p_buffer_def == NULL) {
-        perror("malloc");
-	return errno;
-    }
-
-    init_data(p_buffer_def, buffer_size * sizeof(unsigned char));
-
-    ret = mem_def(p_buffer_def, len_def, p_buffer, len_tot, Z_DEFAULT_COMPRESSION);
-
-    U8 *p_final_buf = malloc( (*len_def) * sizeof(unsigned char));
-
-    memcpy(p_final_buf, p_buffer_def, *len_def);
-    
-    //might not have to do ntohl 
-    fseek(all_file, 33, SEEK_SET);
-    //printf("%d\n", *len_def);
-    U64 buffer = 0;
-    U64 *len_def_reverse = &buffer;
-    *len_def_reverse = ntohl(*len_def);
-    //printf("%d\n", *len_def_reverse);
-=======
         if (p_buffer_def == NULL) {
             perror("malloc");
 	    return errno;
@@ -228,7 +150,6 @@ int main(int argc, char *argv[]) {
     U64 buffer = 0;
     U64 *len_def_reverse = &buffer;
     *len_def_reverse = ntohl(*len_def);
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     fwrite(len_def_reverse, 1, 4 ,all_file);
 
     fseek(all_file, 37, SEEK_SET);
@@ -236,22 +157,6 @@ int main(int argc, char *argv[]) {
     fwrite(type_ptr, 1, 4 ,all_file);
 
     fseek(all_file, 41, SEEK_SET);
-<<<<<<< HEAD
-
-    fwrite(p_final_buf, 1, *len_def, all_file);
-
-    U8 td[*len_def + 4];
-
-   for(int i = 0; i < *len_def + 4; ++i){
-	if(i < 4){
-	 td[i] = type_ptr[i];
-   	}else{
-	 td[i] = p_final_buf[i-4];
-	}
-   }
-
-    U32 calculated_crc = crc(td,*len_def + 4);
-=======
     fwrite(p_final_buf, 1, *len_def, all_file);
 
     U8 td[*len_def + 4];
@@ -262,34 +167,20 @@ int main(int argc, char *argv[]) {
 	        td[i] = p_final_buf[i-4];
 	    }
     }
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
 
     //set the crc for the IDAT chunk
     U32 calculated_crc = ntohl(crc(td,*len_def + 4));
     U32 *ptr_crc = &calculated_crc;
-<<<<<<< HEAD
-
-    //printf("%x\n", calculated_crc);
-
-    fseek(all_file, 41 + *len_def, SEEK_SET);
-
-    fwrite(ptr_crc, 1, 4, all_file); 
-
-=======
     fseek(all_file, 41 + *len_def, SEEK_SET);
     fwrite(ptr_crc, 1, 4, all_file); 
 
 
     //set the length for the IEND chunk
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     fseek(all_file, 45 + *len_def, SEEK_SET);
     char length_IEND[4] = {0x0, 0x0, 0x0, 0x0};
     fwrite(length_IEND, 1, 4 ,all_file);
 
-<<<<<<< HEAD
-=======
     //set the type for the IEND chunk
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
     fseek(all_file, 49 + *len_def, SEEK_SET);
     char type_IEND[4] = {0x49, 0x45, 0x4e, 0x44};
     fwrite(type_IEND, 1, 4 ,all_file);
@@ -297,13 +188,6 @@ int main(int argc, char *argv[]) {
     //set the crc for the IEND chunk
     U32 calculated_crc_end = ntohl(crc(type_IEND, 4));
     U32 *ptr_crc_end = &calculated_crc_end;
-<<<<<<< HEAD
-
-    fwrite(ptr_crc_end, 1, 4, all_file);
-    
-
-    fclose(all_file);
-=======
     fwrite(ptr_crc_end, 1, 4, all_file);
 
 
@@ -331,5 +215,4 @@ int main(int argc, char *argv[]) {
     free(p_final_buf);
 
     fclose(all_file); 
->>>>>>> 44ddbce434204feb7995c9262acfda5e2fc4e8fe
 }

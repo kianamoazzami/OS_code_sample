@@ -66,5 +66,6 @@ int get_png_height(struct data_IHDR *buf);
 int get_png_width(struct data_IHDR *buf);
 int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence);
 U8 get_chunk_data(FILE *fp, long offset, long offset2);
+int get_chunk(struct chunk *out, FILE *fp, long offset);
 
 /* declare your own functions prototypes here */
